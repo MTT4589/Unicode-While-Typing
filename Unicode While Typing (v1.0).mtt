@@ -1,0 +1,73 @@
+#Auto_Execute_On_Load# = #On#
+
+#Pre_Edit# = #On#
+
+;<User_Script> -------------------------------------
+
+;Script_Title      := "Unicode While Typing"
+;Script_Version := "1.0"
+
+gui, add, text, xm y+10, %%;Script_Title%% (v%%;Script_Version%%)
+
+gui, add, edit, w100 vUser_Input gAnonymous_Function%%++;AF_Unique_Id%%,
+Anonymous_Function%%;AF_Unique_Id%%()
+{
+guicontrolget, User_Input
+guicontrol, , Unicode_Char, % Chr(User_Input)
+}
+
+guicontrol, focus, User_Input
+
+gui, add, text, x+5 yp+2 w50 vUnicode_Char Center +border,
+
+gui, add, button, x+5 yp-5 Default gAnonymous_Function%%++;AF_Unique_Id%%, Send
+Anonymous_Function%%;AF_Unique_Id%%()
+{
+gui, hide
+guicontrolget, User_Input
+SendInput, % Chr(User_Input)
+}
+
+gui, add, button, x+5 gAnonymous_Function%%++;AF_Unique_Id%%, Hide
+Anonymous_Function%%;AF_Unique_Id%%()
+{
+gui, hide
+}
+
+gui, add, text, xm,Type your Unicode number and press "Enter"! (Press "Esc" to Hide)
+
+gui, show, AutoSize Center
+
+return
+
+~Esc::		;-------------------------------------------------------------------------------------------------------------------------------------------------
+
+	;"~" keeps the button original function
+
+gui, hide
+
+return
+
+:c*?:#U::		;-------------------------------------------------------------------------------------------------------------------------------------------------
+
+	;The "HotStrings" works in any window!
+
+	;"c" case sensitive option (for example, "U" is not "u" )
+
+	;"*" Pressing space, enter, etc are not required after typing in order to activate the HotStrings
+
+	;"?" The hotstring will be triggered even when it is inside another word
+
+	;If you want to type literal "#U", type "U" first, then go back and type "#", then continue ...!
+
+CoordMode, Caret, Screen
+
+gui, show, %  "AutoSize " (A_CaretX == "" ? "Center " : "x" A_CaretX " y" A_CaretY)
+
+guicontrol, focus, User_Input		;must be placed after "gui, show" to prevent problems with "A_CaretX " and " A_CaretY"
+
+return
+
+
+
+
